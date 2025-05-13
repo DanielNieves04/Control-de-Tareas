@@ -1,0 +1,46 @@
+/* Campos */
+.modal input[type="email"],
+.modal input[type="password"] {
+  width: 90%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.3s;
+}
+
+.modal input:focus {
+  outline: none;
+  border-color: #764ba2;
+}
+
+/* Botón */
+.modal button {
+  width: 100%;
+  padding: 0.9rem;
+  background-color: #764ba2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.modal button:hover {
+  background-color: #5a3b8c;
+}
+
+.modal button:disabled {
+  background-color: #bbb;
+  cursor: not-allowed;
+}
+
+/* Error */
+.error-user {
+  color: red;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+  

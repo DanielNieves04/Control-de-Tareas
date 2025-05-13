@@ -1,0 +1,214 @@
+  .container-tasks {
+    background-color: #ffffff;
+    padding: 3%;
+    border-radius: 12px;
+    width: 60vw;
+    display: flex;
+  }
+
+  .añadir-task {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 8px;
+    width: 17.72vw;
+    height: 30vh;
+    background-color: #f0f0f0;
+  } 
+
+  .añadir-img-task{
+    width: 60px; /* Ajusta según el diseño */
+    height: 60px;
+    border-radius: 10px;
+    padding: 0%;
+    margin: 0%;
+    cursor: pointer;
+  }
+
+  .añadir-button-task{
+      border: none;
+      color: #5f4bb6;
+      font-size: 1rem;
+      padding: 0%;
+      margin: 0%;      cursor: pointer;
+    }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+      
+  .modal {
+    flex-direction: column;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+  }
+    
+  .modal h2 {
+    margin-top: 0;
+  }
+    
+  .modal form {
+    display: flex;
+    flex-direction: column;
+  }
+   
+  .modal label {
+    margin-bottom: 10px;
+  }
+    
+  .modal input, .modal textarea {
+    margin-top: 5px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 94%;
+    color: black;
+  }
+  
+  .modal-buttons{
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+  }
+
+  .modal button {
+    margin-top: 10px;
+    padding: 6px 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+      
+  .modal button[type="submit"] {
+    background-color: #ffffff;
+    color: #5f4bb6;
+    font-weight: 800;
+    border: 2px solid transparent;
+  }
+  
+  .modal button[type="submit"]:hover {
+    border-color: #5f4bb6;
+  }
+
+ .modal button[type="button"] {
+    background-color: #86a5d9;
+    color: #202a25;
+    font-weight: 800;
+  }
+
+  .modal button[type="button"]:hover{
+    color: #ffffff;
+  }
+
+ .modal select {
+    margin-top: 5px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    background-color: white;
+    cursor: pointer;
+  }
+    
+  .modal select:focus {
+    outline: none;
+    border-color: #5f4bb6;
+  }
+    
+  .tareas-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  
+  .tarea-card {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 8px;
+    width: 17.72vw; /* Ajusta según el diseño */
+    height: 30vh; /* Evita que sea demasiado pequeño */
+    background-color: #f0f0f0;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+
+  .tarea-card-head{
+    display: flex;
+    justify-content: space-between;
+    margin: 0%;
+    padding: 3%;
+    width: 100%;
+  }
+
+  .tarea-card-body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 0%;
+    width: 100%;
+  }
+  
+  .tarea-card-foot{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0%;
+    padding: 0%;
+    width: 100%;
+    color: #5f4bb6;
+  }
+
+  .tarea-card select{
+    border: 0px solid #ccc;
+    border-radius: 20px;
+    width: 38%;
+    background-color: #5c9a67;
+    color: white;
+    padding: 4px;
+    cursor: pointer;
+  }
+
+  .tarea-card select:focus {
+    outline: none;
+    border-color: white;
+  }
+
+  .tarea-card h3 {
+    margin-top: 0;
+  }
+  
+  .tarea-card p {
+    margin: 5px 0;
+  }
+  
+  .eliminar-button {
+    width: 20px; 
+    height: 20px;
+    cursor: pointer;
+  }
+  
+  .eliminar-button:hover {
+    width: 22px; 
+    height: 22px;
+  }
+
+  .fade-out {
+    opacity: 0;
+    transform: translateX(50px);
+  }

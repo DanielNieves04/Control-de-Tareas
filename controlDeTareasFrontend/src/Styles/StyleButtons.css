@@ -1,0 +1,29 @@
+.buttons{
+    display: flex;
+    justify-content: flex-start;
+    margin: 20px 10px 8px 14px;
+    gap: 10px;
+    font-size: 1.2rem;
+}
+
+.buttons button{
+    width: 90px;
+    height: 30px;
+    background-color: #f6f6f6;
+    border: 1px solid #a6a6a6;
+    border-radius: 5px;
+    cursor: pointer;
+    box-sizing: border-box;
+    color: #202a25;
+    font-weight: 600;
+}
+
+.buttons button:hover{
+    border: 2px solid #5f4bb6;
+}
+
+.buttons button:active{
+    background-color: #5f4bb6;
+    color: #ffffff;
+}
+
