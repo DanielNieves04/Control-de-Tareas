@@ -1,7 +1,8 @@
-import React, {useState} from 'react'
+import React, { useEffect , useState} from 'react'
 import '../Styles/StyleHead.css'
 import ComponentLogin from './ComponentLogin';
 import ComponentRegister from './ComponentRegister';
+import cerrarSesion from '../Images/cerrarSesion.png';
 
 export default function ComponentHead() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -17,12 +18,31 @@ export default function ComponentHead() {
 
   const handleLoginSuccess = (email) => {
     setUserEmail(email);
-    setIsLoggedIn(true);  
+    setIsLoggedIn(true);
+    setIsLoginOpen(false);
+    localStorage.setItem("email", email);  
   };
 
+  const handleRegisterSuccess = (email) => {
+    setIsRegisterOpen(false); // Cierra el modal de registro
+    setIsLoginOpen(true);
+  }
+
   const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
     setIsLoggedIn(false);
+    setUserEmail("");
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const email = localStorage.getItem("email");
+    if (token && email) {
+      setIsLoggedIn(true);
+      setUserEmail(email);
+    }
+  }, []);
 
   return (
     <div className='header'>
@@ -36,9 +56,7 @@ export default function ComponentHead() {
           // y el nombre de usuario
           <div className='user-info'>
             <span className='user-email'>{userEmail}</span>
-            <button className='button-logout' onClick={handleLogout}>
-              CERRAR SESIÓN
-            </button>
+            <img className='cerrarSesion' src={cerrarSesion} alt='Añadir nueva tarea' onClick={handleLogout}/>
           </div>
         )}
 
@@ -51,9 +69,9 @@ export default function ComponentHead() {
           </button>
         )}
 
-        {isRegisterOpen && <ComponentRegister onRegisterClose={handleCloseRegister} />}
+        {isRegisterOpen && <ComponentRegister onRegisterClose={handleCloseRegister} onRegisterSuccess={handleRegisterSuccess}/>}
 
-        </div>
+      </div>
         <h1>CONTROL DE TAREAS</h1>
         <p>Administra tu lista de tareas</p>
     </div>

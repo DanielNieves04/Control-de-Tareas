@@ -29,8 +29,8 @@
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
-    gap: 10px;
-    margin-bottom: 4%;
+    gap: 6px;
+    margin-bottom: 2%;
 }
 
 .button-login {
@@ -64,4 +64,27 @@
 
 .button-register:hover {
     color: #ffffff;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cerrarSesion {
+    width: 30px; /* Ajusta según el diseño */
+    height: 30px;
+    padding: 0%;
+    margin: 0%;
+    cursor: pointer;
+}   
+
+.user-email{
+    font-size: 1.2rem;
+    color: #5f4bb6;
+    font-weight: 800;
+    margin: 0;
+    padding-right: 6%;
+    cursor: pointer;
 }

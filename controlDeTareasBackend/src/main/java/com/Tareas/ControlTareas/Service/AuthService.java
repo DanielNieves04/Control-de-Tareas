@@ -31,7 +31,7 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
 
-        String token = jwtUtil.generateToken(user.getEmail());
+        String token = jwtUtil.generateToken(user);
         return new AuthResponse(token);
     }
 
@@ -43,7 +43,7 @@ public class AuthService {
             throw new RuntimeException("Credenciales inválidas");
         }
 
-        String token = jwtUtil.generateToken(user.getEmail());
+        String token = jwtUtil.generateToken(user);
         return new AuthResponse(token);
     }
 }

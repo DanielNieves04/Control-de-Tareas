@@ -144,7 +144,7 @@
     width: 17.72vw; /* Ajusta según el diseño */
     height: 30vh; /* Evita que sea demasiado pequeño */
     background-color: #f0f0f0;
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    transition: opacity 1s ease-out, transform 1s ease-out;
   }
 
   .tarea-card-head{

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import '../Styles/StyleTasks.css';
 import añadirIcon from '../Images/añadir.svg';
 import eliminarIcon from '../Images/eliminar.svg';
@@ -22,87 +23,123 @@ export default function ComponentTasks({ activeButton }) {
   // Obtener tareas al cargar la página
   useEffect(() => {
     if (token) {
-    fetch("https://qs5b0kcp-8080.use2.devtunnels.ms/tareas/findAllTareas",{
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }})
-      .then(res => res.json())
-      .then(data => setTareas(data))
-      .catch(error => console.error("Error al obtener tareas:", error));
-  }}, [token]);
+      const decoded = jwtDecode(token);
+      const usuarioId = decoded.id;
+
+      fetch(`http://localhost:8080/tareas/findAllTareasByUser/${usuarioId}`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(data => setTareas(data))
+        .catch(error => console.error("Error al obtener tareas:", error));
+    }
+  }, [token]);
 
   // Agregar nueva tarea
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     if (!token) {
       console.error("Token no disponible");
       return;
     }
-  
-    const nuevaTarea = { tarea, estado };
-  
+
+    let usuarioId = null;
+    try {
+      const decoded = jwtDecode(token);
+      usuarioId = decoded.id;
+    } catch (error) {
+      console.error("Error al decodificar token:", error);
+      return;
+    }
+
+    const nuevaTarea = {
+      tarea,
+      estado,
+      user: {
+        id: usuarioId
+      }
+    };
+
     fetch("http://localhost:8080/tareas/saveTarea", {
       method: "POST",
-      headers: { 
-        "Content-Type": "application/json", 
-        "Authorization": `Bearer ${token}` 
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify(nuevaTarea),
     })
-    .then(res => {
-      if (!res.ok) throw new Error("Error en el servidor");
-      return res.json();
-    })
-    .then(data => {
-      setTareas([...tareas, data]); // Agregar tarea con ID desde backend
-      handleCloseModal();
-    })
-    .catch(error => console.error("Error al agregar tarea:", error));
-  };
-  
+      .then(res => {
+        if (!res.ok) throw new Error("Error en el servidor");
+        return res.json();
+      })
+      .then(data => {
+        setTareas([...tareas, data]);
+        handleCloseModal();
+      })
+      .catch(error => console.error("Error al agregar tarea:", error));
 
-  // Eliminar tarea
-  const eliminarTarea = (id) => {
-    setDeletingId(id); // Marcar la tarea para animación
+    fetch(`http://localhost:8080/tareas/findAllTareasByUser/${usuarioId}`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(data => setTareas(data))
+        .catch(error => console.error("Error al obtener tareas:", error));
+};
 
+const eliminarTarea = (tareaId) => {
+  if (token) {
+    setDeletingId(tareaId); // para animación
+    
     setTimeout(() => {
-      fetch(`http://localhost:8080/tareas/deleteTarea/${id}`, { method: "DELETE" })
+      fetch(`http://localhost:8080/tareas/deleteTarea/${tareaId}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      })
         .then(() => {
-          setTareas(tareas.filter((t) => t.id !== id));
+          setTareas(tareas.filter((t) => t.id !== tareaId));
           setDeletingId(null);
         })
         .catch(error => console.error("Error al eliminar tarea:", error));
-    }, 500); // Tiempo para la animación (coincide con CSS)
-  };
- 
+    }, 1000); // tiempo de animación
+  }
+};
 
   // Actualizar estado de la tarea
-  const handleEstadoChange = (id, nuevoEstado) => {
-    const tareaActualizada = tareas.find((t) => t.id === id);
+  const handleEstadoChange = (tareaId, nuevoEstado) => {
+    const tareaActualizada = tareas.find((t) => t.id === tareaId);
     
     if (!tareaActualizada) return; // Evita errores si la tarea no existe
   
     const nuevaTarea = { 
       ...tareaActualizada, 
-      estado: nuevoEstado 
+      estado: nuevoEstado
     };
   
-    fetch(`http://localhost:8080/tareas/updateTarea/${id}`, {
+    fetch(`http://localhost:8080/tareas/updateTarea/${tareaId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify(nuevaTarea),
     })
-    .then((res) => res.json())
+    .then((res) => {
+        return res.json();
+    })
     .then((data) => {
-      setTareas(tareas.map((t) => (t.id === id ? data : t))); 
+      setTareas(tareas.map((t) => (t.id === tareaId ? data : t))); 
     })
     .catch((error) => console.error("Error al actualizar tarea:", error));
-  };
-  
+ };
 
   // Filtrar tareas según el botón activo
   const tareasFiltradas = activeButton === "Todas" 
@@ -128,7 +165,7 @@ export default function ComponentTasks({ activeButton }) {
             <div className="tarea-card-head">
               <select
                 value={t.estado}
-                onChange={(e) => handleEstadoChange(Number(t.id) , e.target.value)}
+                onChange={(e) => handleEstadoChange(t.id , e.target.value)}
               >
                 <option value="Por hacer">Por hacer</option>
                 <option value="Haciendo">Haciendo</option>
@@ -142,7 +179,7 @@ export default function ComponentTasks({ activeButton }) {
               <p>{t.fechaCreacion}</p>
               <img
                 className="eliminar-button"
-                onClick={() => eliminarTarea(Number(t.id))}
+                onClick={() => eliminarTarea(t.id)}
                 src={eliminarIcon}
                 alt='Eliminar tarea'
               />

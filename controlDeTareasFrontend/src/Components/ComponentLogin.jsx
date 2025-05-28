@@ -5,6 +5,7 @@ export default function LoginComponent({ onLoginSuccess, onLoginClose }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
@@ -29,15 +30,19 @@ export default function LoginComponent({ onLoginSuccess, onLoginClose }) {
       const data = await response.json();
       localStorage.setItem("token", data.token);
 
-      if (onLoginSuccess) {
-        onLoginSuccess(email); // Pasar email al padre
-      }
+      setShowSuccessModal(true);
+
+      setTimeout(() => {
+        setShowSuccessModal(false);
+        onLoginClose(); // Cierra el modal de inicio de sesión
+        onLoginSuccess(email); // Llama la función que abre el registro
+      }, 2000);
+
     } catch (err) {
       setError(err.message);
       
     } finally {
       setLoading(false);
-      onLoginClose(); 
     }
   };
 
@@ -69,6 +74,15 @@ export default function LoginComponent({ onLoginSuccess, onLoginClose }) {
             {loading ? "Cargando..." : "Ingresar"}
           </button>
         </form>
+        {showSuccessModal && (
+          <div className="success-modal-overlay">
+            <div className="success-modal">
+              <div className="modal-content">
+                <p>¡Inicio de seción exitoso! </p>
+              </div>
+            </div>
+          </div>
+        )}
         <button type="button" onClick={onLoginClose}>
           Cerrar
         </button>
