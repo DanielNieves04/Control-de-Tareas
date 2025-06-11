@@ -13,11 +13,10 @@ import java.util.Map;
 
 @Component
 public class JwtUtil {
-    @Value("${jwt.secret}")
-    private String secret;
 
-    @Value("${jwt.expiration}")
-    private long expiration;
+    private final String secret = "iLqI1JodNLs9KN2OyQbPpKi4LBa4M8DGrw06K49vuHI=";
+
+    private long expiration = 3600000;
 
     public String generateToken(User usuario) {
         Map<String, Object> claims = new HashMap<>();

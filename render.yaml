@@ -1,0 +1,48 @@
+services:
+  - type: web
+    name: control-de-tareas-backend
+    env: docker
+    plan: free
+    dockerfilePath: controlDeTareasBackend/Dockerfile
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - controlDeTareasBackend/**
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://db:5432/controlTareas_db
+      - key: SPRING_DATASOURCE_USERNAME
+        value: postgres
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: nieves@
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+      - key: SPRING_JPA_SHOW_SQL
+        value: "true"
+      - key: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+        value: org.hibernate.dialect.PostgreSQLDialect
+
+  - type: web
+    name: control-de-tareas-frontend
+    env: docker
+    plan: free
+    dockerfilePath: controlDeTareasFrontend/Dockerfile
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - controlDeTareasFrontend/**
+    envVars: []
+
+  - type: pserv
+    name: db
+    env: docker
+    plan: free
+    image: postgres:15
+    dockerCommand: postgres
+    envVars:
+      - key: POSTGRES_DB
+        value: controlTareas_db
+      - key: POSTGRES_USER
+        value: postgres
+      - key: POSTGRES_PASSWORD
+        value: nieves@

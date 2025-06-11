@@ -14,6 +14,10 @@ RUN npm run build
 # production stage
 FROM nginx:alpine
 
+# Copia build del frontend
 COPY --from=build /app/build /usr/share/nginx/html
+
+# Copia configuración personalizada de nginx
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80

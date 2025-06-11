@@ -29,7 +29,8 @@ export default function ComponentTasks({ activeButton }) {
       fetch(`http://localhost:8080/tareas/findAllTareasByUser/${usuarioId}`, {
         method: "GET",
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         }
       })
         .then(res => res.json())
@@ -85,6 +86,7 @@ export default function ComponentTasks({ activeButton }) {
     fetch(`http://localhost:8080/tareas/findAllTareasByUser/${usuarioId}`, {
         method: "GET",
         headers: {
+          "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         }
       })
@@ -119,11 +121,23 @@ const eliminarTarea = (tareaId) => {
     
     if (!tareaActualizada) return; // Evita errores si la tarea no existe
   
-    const nuevaTarea = { 
-      ...tareaActualizada, 
-      estado: nuevoEstado
+    let usuarioId = null;
+    try {
+      const decoded = jwtDecode(token);
+      usuarioId = decoded.id;
+    } catch (error) {
+      console.error("Error al decodificar token:", error);
+      return;
+    }
+
+    const nuevaTarea = {
+      tarea: tareaActualizada.tarea,
+      estado: nuevoEstado,
+      user: {
+        id: usuarioId
+      }
     };
-  
+
     fetch(`http://localhost:8080/tareas/updateTarea/${tareaId}`, {
       method: "PUT",
       headers: {
