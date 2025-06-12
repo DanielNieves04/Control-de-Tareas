@@ -3,21 +3,17 @@ FROM node:18 AS build
 
 WORKDIR /app
 
-COPY controlDeTareasFrontend/ package*.json ./
-
+COPY controlDeTareasFrontend/package*.json ./
 RUN npm install
 
-COPY controlDeTareasFrontend/ .
-
+COPY controlDeTareasFrontend/ ./
 RUN npm run build
 
 # production stage
 FROM nginx:alpine
 
-# Copia build del frontend
 COPY --from=build /app/build /usr/share/nginx/html
-
-# Copia configuración personalizada de nginx
-COPY nginx/default.conf nginx/default.conf
+COPY controlDeTareasFrontend/nginx/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
+
