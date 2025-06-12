@@ -1,11 +1,11 @@
 # Etapa 1: Construcción
-FROM eclipse-temurin:17-jdk-alpine as builder
+FROM maven:3.9.4-eclipse-temurin-17 AS builder
 
 WORKDIR /app
 
 COPY . .
 
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # Etapa 2: Ejecución
 FROM eclipse-temurin:17-jdk-alpine
