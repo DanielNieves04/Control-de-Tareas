@@ -10,15 +10,15 @@ services:
     envVars:
       - key: SPRING_DATASOURCE_URL
         fromDatabase:
-          name: control-db
+          name: control_db
           property: connectionString
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
-          name: control-db
+          name: control_db
           property: user
       - key: SPRING_DATASOURCE_PASSWORD
         fromDatabase:
-          name: control-db
+          name: control_db
           property: password
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         value: update
@@ -40,7 +40,7 @@ services:
         value: https://control-de-tareas-backend.onrender.com
 
 databases:
-  - name: control-db
-    databaseName: controlTareas_db
-    user: postgres
+  - name: control_db
+    databaseName: control_db
+    user: postgres_user
     plan: free
