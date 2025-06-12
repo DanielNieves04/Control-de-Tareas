@@ -1,13 +1,14 @@
 services:
+  # Servicio del Backend en Spring Boot
   - type: web
     name: control-de-tareas-backend
-    env: docker
-    plan: free
+    runtime: docker
+    repo: https://github.com/DanielNieves04/Control-de-Tareas
     dockerfilePath: controlDeTareasBackend/Dockerfile
+    rootDir: controlDeTareasBackend
+    plan: free
     autoDeploy: true
-    buildFilter:
-      paths:
-        - controlDeTareasBackend/**
+    branch: main
     envVars:
       - key: SPRING_DATASOURCE_URL
         value: jdbc:postgresql://db:5432/controlTareas_db
@@ -15,25 +16,33 @@ services:
         value: postgres
       - key: SPRING_DATASOURCE_PASSWORD
         value: nieves@
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+      - key: SPRING_JPA_SHOW_SQL
+        value: "true"
+      - key: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+        value: org.hibernate.dialect.PostgreSQLDialect
 
+  # Servicio del Frontend React
   - type: web
     name: control-de-tareas-frontend
-    env: docker
-    plan: free
+    runtime: docker
+    repo: https://github.com/DanielNieves04/Control-de-Tareas
     dockerfilePath: controlDeTareasFrontend/Dockerfile
+    rootDir: controlDeTareasFrontend
+    plan: free
     autoDeploy: true
-    buildFilter:
-      paths:
-        - controlDeTareasFrontend/**
+    branch: main
     envVars: []
 
+  # Servicio de base de datos PostgreSQL (pserv)
   - type: pserv
     name: db
-    env: docker
-    plan: free
+    runtime: docker
+    repo: https://github.com/DanielNieves04/Control-de-Tareas
     image:
       url: postgres:15
-    dockerCommand: postgres
+    plan: free
     envVars:
       - key: POSTGRES_DB
         value: controlTareas_db
