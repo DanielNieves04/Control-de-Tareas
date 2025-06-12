@@ -31,7 +31,7 @@ services:
     buildFilter:
       paths:
         - controlDeTareasFrontend/**
-    envVars: []
+    envVars: []  # No variables necesarias para frontend
 
   - type: pserv
     name: db
