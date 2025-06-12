@@ -5,6 +5,8 @@ services:
     repo: https://github.com/DanielNieves04/Control-de-Tareas
     branch: main
     dockerfilePath: controlDeTareasBackend/Dockerfile
+    build:
+      context: controlDeTareasBackend
     plan: free
     autoDeploy: true
     envVars:
@@ -33,6 +35,8 @@ services:
     repo: https://github.com/DanielNieves04/Control-de-Tareas
     branch: main
     dockerfilePath: controlDeTareasFrontend/Dockerfile
+    build:
+      context: controlDeTareasFrontend
     plan: free
     autoDeploy: true
     envVars:
