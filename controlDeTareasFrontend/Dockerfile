@@ -18,6 +18,6 @@ FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
 
 # Copia configuración personalizada de nginx
-COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY nginx/default.conf nginx/default.conf
 
 EXPOSE 80
