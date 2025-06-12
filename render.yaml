@@ -1,21 +1,25 @@
 services:
-  # Servicio Backend
   - type: web
     name: control-de-tareas-backend
     runtime: docker
     repo: https://github.com/DanielNieves04/Control-de-Tareas
     branch: main
-    rootDir: controlDeTareasBackend
     dockerfilePath: controlDeTareasBackend/Dockerfile
     plan: free
     autoDeploy: true
     envVars:
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://db:5432/controlTareas_db
+        fromDatabase:
+          name: control-db
+          property: connectionString
       - key: SPRING_DATASOURCE_USERNAME
-        value: postgres
+        fromDatabase:
+          name: control-db
+          property: user
       - key: SPRING_DATASOURCE_PASSWORD
-        value: nieves@
+        fromDatabase:
+          name: control-db
+          property: password
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         value: update
       - key: SPRING_JPA_SHOW_SQL
@@ -23,30 +27,20 @@ services:
       - key: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
         value: org.hibernate.dialect.PostgreSQLDialect
 
-  # Servicio Frontend
   - type: web
     name: control-de-tareas-frontend
     runtime: docker
     repo: https://github.com/DanielNieves04/Control-de-Tareas
     branch: main
-    rootDir: controlDeTareasFrontend
     dockerfilePath: controlDeTareasFrontend/Dockerfile
     plan: free
     autoDeploy: true
-    envVars: []
-
-  # Servicio Base de Datos
-  - type: pserv
-    name: db
-    runtime: docker
-    repo: https://github.com/DanielNieves04/Control-de-Tareas
-    image:
-      url: postgres:15
-    plan: free
     envVars:
-      - key: POSTGRES_DB
-        value: controlTareas_db
-      - key: POSTGRES_USER
-        value: postgres
-      - key: POSTGRES_PASSWORD
-        value: nieves@
+      - key: REACT_APP_API_URL
+        value: https://control-de-tareas-backend.onrender.com
+
+databases:
+  - name: control-db
+    databaseName: controlTareas_db
+    user: postgres
+    plan: free
