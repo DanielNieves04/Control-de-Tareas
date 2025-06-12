@@ -3,10 +3,10 @@ FROM eclipse-temurin:17-jdk-alpine as builder
 
 WORKDIR /app
 
-COPY ./pom.xml .
-COPY ./mvnw .
-COPY .mvn .mvn
-COPY ./src ./src
+COPY .pom.xml .pom.xml
+COPY .mvnw .mvnw
+COPY .mvn .
+COPY ./src .
 
 RUN ./mvnw clean package -DskipTests
 
