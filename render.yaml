@@ -32,7 +32,7 @@ services:
     env: docker
     plan: free
     image:
-      url: postgres
+      url: postgres:15
     dockerCommand: postgres
     envVars:
       - key: POSTGRES_DB
