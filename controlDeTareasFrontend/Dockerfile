@@ -3,11 +3,11 @@ FROM node:18 AS build
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY controlDeTareasFrontend/ package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY controlDeTareasFrontend/ .
 
 RUN npm run build
 
