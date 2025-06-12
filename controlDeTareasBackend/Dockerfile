@@ -6,6 +6,6 @@ RUN mvn clean package -DskipTests
 
 # Etapa 2: ejecución
 FROM eclipse-temurin:17-jdk-alpine
-WORKDIR /app
+VOLUME /tmp
 COPY --from=build /app/target/*.jar app.jar
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app.jar"]
