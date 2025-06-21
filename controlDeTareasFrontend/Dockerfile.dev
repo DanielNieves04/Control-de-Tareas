@@ -1,10 +1,18 @@
+# Imagen base con Node.js
 FROM node:18
 
+# Carpeta de trabajo
 WORKDIR /app
 
+# Copiar package.json e instalar dependencias (solo lo necesario para cacheo)
 COPY package*.json ./
 RUN npm install
 
-EXPOSE 80
+# Copiar el resto del código (el volumen luego lo sobrescribe)
+COPY . .
 
+# Expone el puerto de desarrollo (React o Angular)
+EXPOSE 3000
+
+# Comando de desarrollo
 CMD ["npm", "start"]

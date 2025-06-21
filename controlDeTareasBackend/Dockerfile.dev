@@ -1,0 +1,17 @@
+FROM maven:3.9.4-eclipse-temurin-17
+
+WORKDIR /app
+
+# Copiamos los wrappers de Maven si los tienes
+COPY mvnw .
+COPY .mvn .mvn
+
+# Copiamos el resto para compilación (luego el volumen lo reemplaza)
+COPY pom.xml .
+COPY src ./src
+
+# Expone el puerto del backend
+EXPOSE 8080
+
+# Comando de desarrollo con hot reload
+CMD ["./mvnw", "spring-boot:run"]
