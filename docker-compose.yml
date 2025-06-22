@@ -2,6 +2,7 @@ services:
 
   frontend:
     build:
+      context: ./controlDeTareasFrontend
       dockerfile: Dockerfile
     ports:
       - "3000:80"
