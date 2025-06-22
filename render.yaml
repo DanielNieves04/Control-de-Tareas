@@ -1,7 +1,6 @@
 services:
   - type: web
     name: control-de-tareas-backend
-    context: controlDeTareasBackend
     runtime: docker
     repo: https://github.com/DanielNieves04/Control-de-Tareas
     branch: main

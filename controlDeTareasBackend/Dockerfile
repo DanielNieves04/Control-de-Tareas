@@ -1,11 +1,11 @@
-# Etapa 1: Compilación
+# Etapa 1: Build
 FROM maven:3.9.4-eclipse-temurin-17 AS builder
 
 WORKDIR /app
 
-# Copiar pom.xml y src primero para aprovechar la caché de Docker
-COPY pom.xml .
-COPY src ./src
+# Copiar solo los archivos necesarios desde la subcarpeta controlDeTareasBackend
+COPY controlDeTareasBackend/pom.xml .
+COPY controlDeTareasBackend/src ./src
 
 RUN mvn clean package -DskipTests
 
