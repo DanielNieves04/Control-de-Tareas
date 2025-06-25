@@ -14,7 +14,8 @@ app = Flask(__name__)
 CORS(app)
 
 # Conexión a tu base de datos PostgreSQL (misma usada por Spring Boot)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL") or "postgresql://postgres:nieves@@db:5432/controlTareas_db"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL") or \
+    "postgresql+psycopg2://postgres:nieves@localhost:5432/controlTareas_db"
 db.init_app(app)
 
 # Inicializar LLM
