@@ -38,6 +38,23 @@ services:
     envVars:
       - key: REACT_APP_API_URL
         value: https://control-de-tareas-backend.onrender.com
+      - key: REACT_APP_IA_API_URL
+        value: https://control-de-tareas-pythonapp.onrender.com
+
+  - type: web
+    name: control-de-tareas-pythonapp
+    runtime: docker
+    repo: https://github.com/DanielNieves04/Control-de-Tareas
+    branch: main
+    dockerfilePath: controlDeTareasIA/Dockerfile
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        value: jdbc:postgresql://dpg-d15e4fjipnbc73eaefj0-a:5432/control_db_4lmf
+    buildCommand: ""
+    startCommand: python app.py
+    env: docker
 
 databases:
   - name: control_db
