@@ -18,7 +18,8 @@ function App() {
   const [emailUsuario, setEmailUsuario] = useState(localStorage.getItem("email") || "");
   const [showLogoutSuccessModal, setShowLogoutSuccessModal] = useState(false);
   const [showAñadirSuccessModal, setShowAñadirSuccessModal] = useState(false);
-
+  const [sugerenciasDuplicadas, setSugerenciasDuplicadas] = useState([]);
+  const [mostrarModalDuplicadas, setMostrarModalDuplicadas] = useState(false);
 
   const [mensajesChat, setMensajesChat] = useState([
     { tipo: 'bot', texto: '¡Hola! ¿En qué proyecto estás pensando hoy?' }
@@ -53,7 +54,7 @@ function App() {
           .catch(error => console.error("Error al obtener tareas:", error));
       }
     };
-  cargarTareas();
+    cargarTareas();
   }, [token]);
 
   const handleLoginSuccess = (newToken, email) => {
@@ -73,7 +74,7 @@ function App() {
 
       setTimeout(() => {
         setShowLogoutSuccessModal(false); // Ocultarlo después de 2 segundos
-      }, 2000);  
+      }, 2000);
     }
   }
 
@@ -163,6 +164,28 @@ function App() {
       .catch(error => console.error("Error al agregar tarea:", error));
   };
 
+  const detectarTareasDuplicadas = () => {
+    if (!tareas.length) return;
+
+    fetch("https://control-de-tareas-pythonapp.onrender.com/detectar-duplicadas", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tareas: tareas.map(t => t.tarea) })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data.sugerencias)) {
+          setSugerenciasDuplicadas(data.sugerencias);
+          setMostrarModalDuplicadas(true);
+        } else {
+          console.warn("Respuesta inesperada del backend:", data);
+        }
+      })
+      .catch(err => {
+        console.error("Error al detectar duplicadas:", err);
+      });
+  };
+
   const handleAgregarTarea = (texto) => {
     guardarTarea(texto.replace("📝 * ", ""));
     setShowAñadirSuccessModal(true);
@@ -189,6 +212,12 @@ function App() {
           <span className="tooltip-text">Asistente IA</span>
         </button>
       </div>
+      <div className="tooltip2">
+        <button className="button-ia" onClick={detectarTareasDuplicadas}>
+          📌
+          <span className="tooltip-text">Detectar duplicadas</span>
+        </button>
+      </div>
 
       {mostrarChat && (
         <div className="chatbot-container">
@@ -204,7 +233,7 @@ function App() {
                   {msg.texto}
                 </p>
                 {msg.tipo === 'bot' && msg.texto !== '¡Hola! ¿En qué proyecto estás pensando hoy?' &&
-                  !msg.texto.startsWith("📝 **")  && (
+                  !msg.texto.startsWith("📝 **") && (
                     <button
                       className="add-btn"
                       onClick={() => handleAgregarTarea(msg.texto)}
@@ -245,7 +274,7 @@ function App() {
         <div className="success-modal-overlay">
           <div className="success-modal">
             <div className="modal-content">
-              <p>Tarea añadida. Se añadido en el estado Por hacer</p> 
+              <p>Tarea añadida. Se añadido en el estado Por hacer</p>
             </div>
           </div>
         </div>
@@ -264,6 +293,26 @@ function App() {
             <div className="modal-content">
               <p>¡Sesión cerrada exitosamente!</p>
             </div>
+          </div>
+        </div>
+      )}
+      {mostrarModalDuplicadas && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>Tareas duplicadas o similares detectadas</h2>
+            {sugerenciasDuplicadas.length === 0 ? (
+              <p>No se encontraron duplicados.</p>
+            ) : (
+              <ul className="lista-duplicadas">
+                {sugerenciasDuplicadas.map((grupo, idx) => (
+                  <li key={idx}>
+                    <strong>Similares:</strong> {grupo.tareas_similares.join(" / ")}<br />
+                    <em>Sugerencia:</em> {grupo.sugerencia}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <button onClick={() => setMostrarModalDuplicadas(false)}>Cerrar</button>
           </div>
         </div>
       )}

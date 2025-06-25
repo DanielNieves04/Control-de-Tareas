@@ -27,7 +27,21 @@ llm = ChatGoogleGenerativeAI(
 
 # Prompt especializado
 prompt_template = """
-Eres un asistente experto en gestión de proyectos. A partir de la siguiente descripción, genera una lista de tareas claras, breves y sin explicaciones adicionales.
+Actúa como un asistente virtual con sólida experiencia en gestión de proyectos, capaz de analizar descripciones generales e identificar los pasos necesarios para convertirlas en tareas ejecutables.
+
+A partir de la siguiente descripción, genera únicamente una lista clara, ordenada y accionable de tareas necesarias para desarrollar el proyecto.
+
+Cada tarea debe estar redactada en una sola línea, utilizando un lenguaje directo, profesional y enfocado en la acción.
+
+No incluyas explicaciones adicionales, introducciones ni conclusiones.
+
+Al final de cada tarea, agrega un guion seguido exactamente del título del prompt original que el usuario proporcione (es decir, la descripción inicial del proyecto).
+
+Ejemplo de formato deseado:
+1. Crear esquema inicial del sistema - [Título del prompt]
+
+Aquí está la descripción del proyecto:
+
 
 DESCRIPCIÓN:
 {descripcion}
@@ -37,6 +51,32 @@ LISTA DE SUBTAREAS:
 
 prompt = ChatPromptTemplate.from_template(prompt_template)
 chain = prompt | llm | StrOutputParser()
+
+# Prompt para detectar tareas duplicadas o similares
+prompt_duplicadas_template = """
+Actúa como un asistente experto en productividad.
+
+Analiza la siguiente lista de tareas y encuentra aquellas que son duplicadas o muy similares. 
+Para cada grupo de tareas similares, sugiere si deberían combinarse o eliminarse y justifica brevemente.
+
+Devuelve el resultado como una lista en formato JSON así:
+
+[
+  {{
+    "tareas_similares": ["Tarea A", "Tarea B"],
+    "sugerencia": "Combinar ambas como '...'"
+  }},
+  ...
+]
+
+Si no hay tareas similares, responde con una lista vacía: []
+TAREAS:
+{tareas}
+"""
+
+prompt_duplicadas = ChatPromptTemplate.from_template(prompt_duplicadas_template)
+chain_duplicadas = prompt_duplicadas | llm | StrOutputParser()
+
 
 @app.route('/generar', methods=['POST'])
 def generar_subtareas():
@@ -78,6 +118,33 @@ def guardar_subtareas():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+    
+@app.route('/detectar-duplicadas', methods=['POST'])
+def detectar_duplicadas():
+    data = request.get_json()
+    tareas = data.get('tareas', [])
+
+    if not tareas or not isinstance(tareas, list):
+        return jsonify({"error": "Lista de tareas vacía o inválida"}), 400
+
+    # Convertimos la lista a un string enumerado para mejorar el análisis
+    lista_tareas = "\n".join(f"- {t}" for t in tareas)
+    resultado = chain_duplicadas.invoke({"tareas": lista_tareas})
+
+    try:
+        # Intentamos interpretar la respuesta como JSON directamente
+        import json
+        sugerencias = json.loads(resultado)
+    except Exception as e:
+        # En caso de error, devolvemos el resultado crudo
+        sugerencias = resultado
+
+    return jsonify({"sugerencias": sugerencias})
+
+
+@app.errorhandler(405)
+def method_not_allowed(e):
+    return jsonify(error="Método no permitido"), 405
 
 
 if __name__ == '__main__':
