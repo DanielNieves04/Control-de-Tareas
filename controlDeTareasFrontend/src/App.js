@@ -167,7 +167,7 @@ function App() {
   const detectarTareasDuplicadas = () => {
     if (!tareas.length) return;
 
-    fetch("http://localhost:5000/detectar-duplicadas", {
+    fetch("https://control-de-tareas-pythonapp.onrender.com/detectar-duplicadas", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ tareas: tareas.map(t => t.tarea) })
