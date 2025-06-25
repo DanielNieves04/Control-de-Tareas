@@ -94,7 +94,7 @@ function App() {
     setMensajesChat(prev => [...prev, { tipo: 'usuario', texto: mensaje }]);
     setMensaje('');
 
-    fetch("https://control-de-tareas-frontend.onrender.com/generar", {
+    fetch("https://control-de-tareas-pythonapp.onrender.com/generar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
