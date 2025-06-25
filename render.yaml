@@ -52,9 +52,6 @@ services:
     envVars:
       - key: DATABASE_URL
         value: jdbc:postgresql://dpg-d15e4fjipnbc73eaefj0-a:5432/control_db_4lmf
-    buildCommand: ""
-    startCommand: python app.py
-    env: docker
 
 databases:
   - name: control_db
