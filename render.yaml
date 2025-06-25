@@ -37,7 +37,7 @@ services:
     autoDeploy: true
     envVars:
       - key: REACT_APP_API_URL
-        value: https://control-de-tareas-backend.onrender.com
+        value: https://api.render.com/deploy/srv-d15e4rjipnbc73eaem2g?key=Vo_ikxIMS5Y
 
 databases:
   - name: control_db
