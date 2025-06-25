@@ -25,6 +25,7 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./controlDeTareasBackend:/app
+      - ~/.m2:/root/.m2
     ports:
       - "8080:8080"
     environment:
@@ -35,6 +36,20 @@ services:
       - SPRING_JPA_SHOW_SQL=true
       - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
     command: ./mvnw spring-boot:run
+    depends_on:
+      - db
+
+  pythonapp:
+    build:
+      context: ./controlDeTareasIA  
+    environment:
+      - DATABASE_URL=postgresql://postgres:nieves@@db:5432/controlTareas_db
+    volumes:
+      - ./controlDeTareasIA:/app
+    working_dir: /app
+    command: python app.py  # ajusta al nombre de tu archivo principal
+    ports:
+      - "5000:5000"
     depends_on:
       - db
 

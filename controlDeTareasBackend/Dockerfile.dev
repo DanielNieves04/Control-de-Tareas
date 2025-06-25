@@ -1,17 +1,24 @@
+# Imagen base con Maven y JDK 17
 FROM maven:3.9.4-eclipse-temurin-17
 
+# Directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copiamos los wrappers de Maven si los tienes
+# Copiamos los archivos del wrapper
 COPY mvnw .
 COPY .mvn .mvn
 
-# Copiamos el resto para compilación (luego el volumen lo reemplaza)
+# Copiamos el archivo de configuración de Maven
 COPY pom.xml .
+
+# Descargamos las dependencias para cachear mejor las capas
+RUN ./mvnw dependency:go-offline
+
+# Copiamos el resto del código fuente (aunque será reemplazado con bind mount en desarrollo)
 COPY src ./src
 
-# Expone el puerto del backend
+# Puerto donde corre Spring Boot por defecto
 EXPOSE 8080
 
-# Comando de desarrollo con hot reload
+# Comando por defecto para ejecutar en modo desarrollo
 CMD ["./mvnw", "spring-boot:run"]

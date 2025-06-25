@@ -8,13 +8,14 @@ export default function LoginComponent({ onLoginSuccess, onLoginClose }) {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8080/api/auth/login", {
+      const response = await fetch("https://api.render.com/deploy/srv-d15e4rjipnbc73eaem2g?key=Vo_ikxIMS5Y/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -35,11 +36,11 @@ export default function LoginComponent({ onLoginSuccess, onLoginClose }) {
       setTimeout(() => {
         setShowSuccessModal(false);
         onLoginClose(); // Cierra el modal de inicio de sesión
-        onLoginSuccess(email); // Llama la función que abre el registro
+        onLoginSuccess(data.token, email); // Llama la función que abre el registro
       }, 2000);
 
     } catch (err) {
-      setError(err.message);
+      setError("El usuario o la contraseña son incorrectos.");
       
     } finally {
       setLoading(false);
@@ -49,7 +50,7 @@ export default function LoginComponent({ onLoginSuccess, onLoginClose }) {
   return (
     <div className="modal-overlay">
       <div className="modal">
-        <h2>INICIO DE SECIÓN</h2>
+        <h2>INICIO DE SESIÓN</h2>
         <form onSubmit={handleLogin}>
           <label htmlFor="email">Correo</label>
           <input
@@ -78,7 +79,7 @@ export default function LoginComponent({ onLoginSuccess, onLoginClose }) {
           <div className="success-modal-overlay">
             <div className="success-modal">
               <div className="modal-content">
-                <p>¡Inicio de seción exitoso! </p>
+                <p>¡Inicio de sesión exitoso! </p>
               </div>
             </div>
           </div>

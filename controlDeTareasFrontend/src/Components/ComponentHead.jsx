@@ -4,7 +4,7 @@ import ComponentLogin from './ComponentLogin';
 import ComponentRegister from './ComponentRegister';
 import cerrarSesion from '../Images/cerrarSesion.png';
 
-export default function ComponentHead() {
+export default function ComponentHead({ onLoginSuccess }) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -16,11 +16,15 @@ export default function ComponentHead() {
   const handleOpenRegister = () => setIsRegisterOpen(true);
   const handleCloseRegister = () => setIsRegisterOpen(false);
 
-  const handleLoginSuccess = (email) => {
+  const handleLoginSuccess = (token, email) => {
     setUserEmail(email);
     setIsLoggedIn(true);
     setIsLoginOpen(false);
     localStorage.setItem("email", email);  
+    localStorage.setItem("token", token);
+    if (onLoginSuccess) {
+      onLoginSuccess(token, email); // Notifica al padre (App.js)
+    }
   };
 
   const handleRegisterSuccess = (email) => {
@@ -33,6 +37,9 @@ export default function ComponentHead() {
     localStorage.removeItem("email");
     setIsLoggedIn(false);
     setUserEmail("");
+    if (onLoginSuccess) {
+      onLoginSuccess(null, ""); // Limpia en el padre también
+    }
   };
 
   useEffect(() => {
@@ -56,7 +63,7 @@ export default function ComponentHead() {
           // y el nombre de usuario
           <div className='user-info'>
             <span className='user-email'>{userEmail}</span>
-            <img className='cerrarSesion' src={cerrarSesion} alt='Añadir nueva tarea' onClick={handleLogout}/>
+            <img className='cerrarSesion' src={cerrarSesion} alt='cerrar seción' onClick={handleLogout}/>
           </div>
         )}
 
