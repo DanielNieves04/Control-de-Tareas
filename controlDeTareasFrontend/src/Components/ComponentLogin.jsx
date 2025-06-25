@@ -15,7 +15,7 @@ export default function LoginComponent({ onLoginSuccess, onLoginClose }) {
     setLoading(true);
 
     try {
-      const response = await fetch("https://api.render.com/deploy/srv-d15e4rjipnbc73eaem2g?key=Vo_ikxIMS5Y/api/auth/login", {
+      const response = await fetch("https://control-de-tareas-backend.onrender.comhttps://control-de-tareas-backend.onrender.com/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

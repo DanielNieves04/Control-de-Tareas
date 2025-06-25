@@ -41,7 +41,7 @@ function App() {
         const decoded = jwtDecode(token);
         const usuarioId = decoded.id;
 
-        fetch(`https://api.render.com/deploy/srv-d15e4rjipnbc73eaem2g?key=Vo_ikxIMS5Y/tareas/findAllTareasByUser/${usuarioId}`, {
+        fetch(`https://control-de-tareas-backend.onrender.com/tareas/findAllTareasByUser/${usuarioId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -145,7 +145,7 @@ function App() {
       }
     };
 
-    fetch("https://api.render.com/deploy/srv-d15e4rjipnbc73eaem2g?key=Vo_ikxIMS5Y/tareas/saveTarea", {
+    fetch("https://control-de-tareas-backend.onrender.com/tareas/saveTarea", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

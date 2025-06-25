@@ -62,7 +62,7 @@ export default function ComponentTasks({ activeButton, tareas, setTareas }) {
       }
     };
 
-    fetch("https://api.render.com/deploy/srv-d15e4rjipnbc73eaem2g?key=Vo_ikxIMS5Y/tareas/saveTarea", {
+    fetch("https://control-de-tareas-backend.onrender.com/tareas/saveTarea", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -86,7 +86,7 @@ export default function ComponentTasks({ activeButton, tareas, setTareas }) {
       setDeletingId(tareaId); // para animación
 
       setTimeout(() => {
-        fetch(`https://api.render.com/deploy/srv-d15e4rjipnbc73eaem2g?key=Vo_ikxIMS5Y/tareas/deleteTarea/${tareaId}`, {
+        fetch(`https://control-de-tareas-backend.onrender.com/tareas/deleteTarea/${tareaId}`, {
           method: "DELETE",
           headers: {
             "Authorization": `Bearer ${token}`
@@ -124,7 +124,7 @@ export default function ComponentTasks({ activeButton, tareas, setTareas }) {
       }
     };
 
-    fetch(`https://api.render.com/deploy/srv-d15e4rjipnbc73eaem2g?key=Vo_ikxIMS5Y/tareas/updateTarea/${tareaId}`, {
+    fetch(`https://control-de-tareas-backend.onrender.com/tareas/updateTarea/${tareaId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -152,7 +152,7 @@ export default function ComponentTasks({ activeButton, tareas, setTareas }) {
     user: { id: jwtDecode(token).id }
   };
 
-  fetch(`https://api.render.com/deploy/srv-d15e4rjipnbc73eaem2g?key=Vo_ikxIMS5Y/tareas/updateTarea/${tareaEditando.id}`, {
+  fetch(`https://control-de-tareas-backend.onrender.com/tareas/updateTarea/${tareaEditando.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
