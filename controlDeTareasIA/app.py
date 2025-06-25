@@ -38,7 +38,7 @@ No incluyas explicaciones adicionales, introducciones ni conclusiones.
 Al final de cada tarea, agrega un guion seguido exactamente del título del prompt original que el usuario proporcione (es decir, la descripción inicial del proyecto).
 
 Ejemplo de formato deseado:
-1. Crear esquema inicial del sistema - [Título del prompt]
+* Crear esquema inicial del sistema - [Título del prompt]
 
 Aquí está la descripción del proyecto:
 
@@ -59,15 +59,16 @@ Actúa como un asistente experto en productividad.
 Analiza la siguiente lista de tareas y encuentra aquellas que son duplicadas o muy similares. 
 Para cada grupo de tareas similares, sugiere si deberían combinarse o eliminarse y justifica brevemente.
 
-Devuelve el resultado como una lista en formato JSON así:
+Devuelve únicamente el resultado como una **lista JSON pura y sin ningún formato adicional**. No uses comillas triples, markdown ni encabezados.
 
+Ejemplo de formato esperado:
 [
-  {{
+  {
     "tareas_similares": ["Tarea A", "Tarea B"],
     "sugerencia": "Combinar ambas como '...'"
-  }},
-  ...
+  }
 ]
+
 
 Si no hay tareas similares, responde con una lista vacía: []
 TAREAS:
