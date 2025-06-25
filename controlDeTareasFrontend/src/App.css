@@ -35,15 +35,7 @@ html {
   z-index: 1000;
 }
 
-.toolti2 {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 1000;
-}
-
-.tooltip .tooltip-text,
-.toolti2 .tooltip-text {
+.tooltip .tooltip-text {
   visibility: hidden;
   width: 120px;
   background-color: #5f4bb6;
@@ -61,8 +53,7 @@ html {
 }
 
 
-.tooltip:hover .tooltip-text,
-.toolti2:hover .tooltip-text {
+.tooltip:hover .tooltip-text{
   visibility: visible;
   opacity: 1;
 }
@@ -195,4 +186,44 @@ html {
 
 .add-btn:hover {
   background-color: #d1e7ff;
+}
+
+.modal-duplicadas {
+  max-width: 600px;
+  padding: 20px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.duplicadas-contenido {
+  margin-top: 10px;
+}
+
+.duplicada-item {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.duplicada-item ul {
+  padding-left: 20px;
+  margin: 5px 0;
+}
+
+.btn-cerrar {
+  margin-top: 10px;
+  background: #007bff;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-cerrar:hover {
+  background: #0056b3;
 }

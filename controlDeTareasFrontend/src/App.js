@@ -167,23 +167,38 @@ function App() {
   const detectarTareasDuplicadas = () => {
     if (!tareas.length) return;
 
-    fetch("https://control-de-tareas-pythonapp.onrender.com/detectar-duplicadas", {
+    fetch("http://localhost:5000/detectar-duplicadas", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ tareas: tareas.map(t => t.tarea) })
     })
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data.sugerencias)) {
-          setSugerenciasDuplicadas(data.sugerencias);
+        let sugerencias = data.sugerencias;
+
+        // Si la respuesta viene como string con ```json\n[...]\n```
+        if (typeof sugerencias === "string") {
+          const match = sugerencias.match(/```json\s*([\s\S]*?)\s*```/);
+          if (match && match[1]) {
+            try {
+              sugerencias = JSON.parse(match[1]);
+            } catch (error) {
+              console.error("Error al parsear sugerencias JSON:", error);
+              return;
+            }
+          } else {
+            console.warn("No se pudo extraer JSON de la cadena:", sugerencias);
+            return;
+          }
+        }
+
+        if (Array.isArray(sugerencias)) {
+          setSugerenciasDuplicadas(sugerencias);
           setMostrarModalDuplicadas(true);
         } else {
-          console.warn("Respuesta inesperada del backend:", data);
+          console.warn("Formato de sugerencias no reconocido:", sugerencias);
         }
       })
-      .catch(err => {
-        console.error("Error al detectar duplicadas:", err);
-      });
   };
 
   const handleAgregarTarea = (texto) => {
@@ -298,24 +313,30 @@ function App() {
       )}
       {mostrarModalDuplicadas && (
         <div className="modal-overlay">
-          <div className="modal">
-            <h2>Tareas duplicadas o similares detectadas</h2>
-            {sugerenciasDuplicadas.length === 0 ? (
-              <p>No se encontraron duplicados.</p>
-            ) : (
-              <ul className="lista-duplicadas">
-                {sugerenciasDuplicadas.map((grupo, idx) => (
-                  <li key={idx}>
-                    <strong>Similares:</strong> {grupo.tareas_similares.join(" / ")}<br />
-                    <em>Sugerencia:</em> {grupo.sugerencia}
-                  </li>
-                ))}
-              </ul>
-            )}
-            <button onClick={() => setMostrarModalDuplicadas(false)}>Cerrar</button>
+          <div className="modal modal-duplicadas">
+            <h2>🔍 Sugerencias por tareas similares</h2>
+            <div className="duplicadas-contenido">
+              {sugerenciasDuplicadas.length === 0 ? (
+                <p>No se encontraron duplicados.</p>
+              ) : (
+                sugerenciasDuplicadas.map((grupo, idx) => (
+                  <div key={idx} className="duplicada-item">
+                    <p><strong>🧩 Tareas similares:</strong></p>
+                    <ul>
+                      {grupo.tareas_similares.map((t, i) => (
+                        <li key={i}>• {t}</li>
+                      ))}
+                    </ul>
+                    <p><strong>✅ Sugerencia:</strong> {grupo.sugerencia}</p>
+                  </div>
+                ))
+              )}
+            </div>
+            <button className="btn-cerrar" onClick={() => setMostrarModalDuplicadas(false)}>Cerrar</button>
           </div>
         </div>
       )}
+
 
     </div>
   );

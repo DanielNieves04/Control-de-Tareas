@@ -59,16 +59,15 @@ Actúa como un asistente experto en productividad.
 Analiza la siguiente lista de tareas y encuentra aquellas que son duplicadas o muy similares. 
 Para cada grupo de tareas similares, sugiere si deberían combinarse o eliminarse y justifica brevemente.
 
-Devuelve únicamente el resultado como una **lista JSON pura y sin ningún formato adicional**. No uses comillas triples, markdown ni encabezados.
+Devuelve el resultado como una lista en formato JSON así:
 
-Ejemplo de formato esperado:
 [
-  {
+  {{
     "tareas_similares": ["Tarea A", "Tarea B"],
     "sugerencia": "Combinar ambas como '...'"
-  }
+  }},
+  ...
 ]
-
 
 Si no hay tareas similares, responde con una lista vacía: []
 TAREAS:
