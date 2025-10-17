@@ -9,11 +9,17 @@ services:
     autoDeploy: true
     envVars:
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://dpg-d3p89q56ubrc73djvi0o-a:5432/control_db_4lmf_psho
+        fromDatabase:
+          name: control_db
+          property: connectionString
       - key: SPRING_DATASOURCE_USERNAME
-        value: postgres_user
+        fromDatabase:
+          name: control_db
+          property: user
       - key: SPRING_DATASOURCE_PASSWORD
-        value: HXa8ZxlUsZQ2W2E5hHs7UjERWjNiTHzN
+        fromDatabase:
+          name: control_db
+          property: password
       - key: SPRING_DATASOURCE_DRIVER_CLASS_NAME
         value: org.postgresql.Driver
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
@@ -22,6 +28,7 @@ services:
         value: "true"
       - key: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
         value: org.hibernate.dialect.PostgreSQLDialect
+
 
   - type: web
     name: control-de-tareas-frontend
@@ -47,7 +54,9 @@ services:
     autoDeploy: true
     envVars:
       - key: DATABASE_URL
-        value: postgresql+psycopg2://postgres_user:<PASSWORD>@dpg-d3p89q56ubrc73djv1o0-a.render-database.com:5432/control_db_4lmf_psho
+        fromDatabase:
+          name: control_db
+          property: connectionString
 
 databases:
   - name: control_db
