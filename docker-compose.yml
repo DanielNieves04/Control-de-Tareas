@@ -19,6 +19,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/controlTareas_db
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=nieves@
+      - spring.jpa.hibernate.ddl-auto=update
     depends_on:
       - db
 

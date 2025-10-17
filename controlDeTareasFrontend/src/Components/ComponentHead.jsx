@@ -80,7 +80,7 @@ export default function ComponentHead({ onLoginSuccess }) {
 
       </div>
         <h1>CONTROL DE TAREAS</h1>
-        <p>Administra tu lista de tareas</p>
+        <p>Administra tu lista de tareass</p>
     </div>
   )
 }

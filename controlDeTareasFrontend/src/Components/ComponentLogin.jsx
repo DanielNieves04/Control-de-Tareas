@@ -7,6 +7,7 @@ export default function LoginComponent({ onLoginSuccess, onLoginClose }) {
   const [error, setError] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const BASE_URL_AUTH = "http://localhost:8080/api/auth";
 
   
   const handleLogin = async (e) => {
@@ -15,7 +16,7 @@ export default function LoginComponent({ onLoginSuccess, onLoginClose }) {
     setLoading(true);
 
     try {
-      const response = await fetch("https://control-de-tareas-backend.onrender.com/api/auth/login", {
+      const response = await fetch(`${BASE_URL_AUTH}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

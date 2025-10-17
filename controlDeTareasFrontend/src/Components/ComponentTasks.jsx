@@ -13,6 +13,7 @@ export default function ComponentTasks({ activeButton, tareas, setTareas }) {
   const [deletingId, setDeletingId] = useState(null); // Para animación de eliminación
   const token = localStorage.getItem("token");
   const [tareaEditando, setTareaEditando] = useState(null);
+  const BASE_URL = "http://localhost:8080/tareas";
 
   // Abrir y cerrar modal
   const handleOpenModal = () => setIsModalOpen(true);
@@ -62,7 +63,7 @@ export default function ComponentTasks({ activeButton, tareas, setTareas }) {
       }
     };
 
-    fetch("https://control-de-tareas-backend.onrender.com/tareas/saveTarea", {
+    fetch(`${BASE_URL}/saveTarea`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -86,7 +87,7 @@ export default function ComponentTasks({ activeButton, tareas, setTareas }) {
       setDeletingId(tareaId); // para animación
 
       setTimeout(() => {
-        fetch(`https://control-de-tareas-backend.onrender.com/tareas/deleteTarea/${tareaId}`, {
+        fetch(`${BASE_URL}/deleteTarea/${tareaId}`, {
           method: "DELETE",
           headers: {
             "Authorization": `Bearer ${token}`
@@ -124,7 +125,7 @@ export default function ComponentTasks({ activeButton, tareas, setTareas }) {
       }
     };
 
-    fetch(`https://control-de-tareas-backend.onrender.com/tareas/updateTarea/${tareaId}`, {
+    fetch(`${BASE_URL}/updateTarea/${tareaId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -152,7 +153,7 @@ export default function ComponentTasks({ activeButton, tareas, setTareas }) {
     user: { id: jwtDecode(token).id }
   };
 
-  fetch(`https://control-de-tareas-backend.onrender.com/tareas/updateTarea/${tareaEditando.id}`, {
+  fetch(`${BASE_URL}/updateTarea/${tareaEditando.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

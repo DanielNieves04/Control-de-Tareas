@@ -42,7 +42,7 @@ function App() {
         const decoded = jwtDecode(token);
         const usuarioId = decoded.id;
 
-        fetch(`https://control-de-tareas-backend.onrender.com/tareas/findAllTareasByUser/${usuarioId}`, {
+        fetch(`http://localhost:8080/tareas/findAllTareasByUser/${usuarioId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -95,7 +95,7 @@ function App() {
     setMensajesChat(prev => [...prev, { tipo: 'usuario', texto: mensaje }]);
     setMensaje('');
 
-    fetch("https://control-de-tareas-pythonapp.onrender.com/generar", {
+    fetch("http://localhost:5000/generar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -146,7 +146,7 @@ function App() {
       }
     };
 
-    fetch("https://control-de-tareas-backend.onrender.com/tareas/saveTarea", {
+    fetch("http://localhost:8000/tareas/saveTarea", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -167,7 +167,7 @@ function App() {
   const detectarTareasDuplicadas = () => {
     if (!tareas.length) return;
 
-    fetch("https://control-de-tareas-pythonapp.onrender.com/detectar-duplicadas", {
+    fetch("http://localhost:5000/detectar-duplicadas", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ tareas: tareas.map(t => t.tarea) })
