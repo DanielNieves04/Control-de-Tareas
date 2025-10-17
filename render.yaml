@@ -52,3 +52,9 @@ services:
     envVars:
       - key: DATABASE_URL
         value: postgresql+psycopg2://postgres_user:<PASSWORD>@dpg-d15e4fjipnbc73eaefj0-a:5432/control_db_4lmf
+
+  - databases:
+    - name: control_db
+      databaseName: control_db_4lmf
+      user: postgres_user
+      plan: free

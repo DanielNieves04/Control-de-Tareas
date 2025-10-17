@@ -4,7 +4,7 @@ FROM maven:3.9.4-eclipse-temurin-17 AS builder
 WORKDIR /app
 
 # Copiar el proyecto (solo el backend)
-COPY . .
+COPY controlDeTareasBackend/ ./
 
 # Ejecutar el build con Maven
 RUN mvn clean package -DskipTests
