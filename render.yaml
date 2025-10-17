@@ -1,4 +1,5 @@
 services:
+  # 🚀 Backend - Spring Boot
   - type: web
     name: control-de-tareas-backend
     runtime: docker
@@ -29,6 +30,7 @@ services:
       - key: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
         value: org.hibernate.dialect.PostgreSQLDialect
 
+  # 💻 Frontend - React
   - type: web
     name: control-de-tareas-frontend
     runtime: docker
@@ -43,6 +45,7 @@ services:
       - key: REACT_APP_IA_API_URL
         value: https://control-de-tareas-pythonapp.onrender.com
 
+  # 🤖 Microservicio de IA - Python
   - type: web
     name: control-de-tareas-pythonapp
     runtime: docker
@@ -57,6 +60,7 @@ services:
           name: control_db
           property: connectionString
 
+# 🗄️ Base de datos PostgreSQL en Render
 databases:
   - name: control_db
     databaseName: control_db_4lmf_psho
