@@ -42,7 +42,7 @@ function App() {
         const decoded = jwtDecode(token);
         const usuarioId = decoded.id;
 
-        fetch(`http://localhost:8080/tareas/findAllTareasByUser/${usuarioId}`, {
+        fetch(`https://control-de-tareas-backend.onrender.com/tareas/findAllTareasByUser/${usuarioId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

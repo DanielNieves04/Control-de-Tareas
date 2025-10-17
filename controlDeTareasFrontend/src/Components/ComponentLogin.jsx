@@ -7,7 +7,7 @@ export default function LoginComponent({ onLoginSuccess, onLoginClose }) {
   const [error, setError] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const BASE_URL_AUTH = "http://localhost:8080/api/auth";
+  const BASE_URL_AUTH = "https://control-de-tareas-backend.onrender.com/api/auth";
 
   
   const handleLogin = async (e) => {

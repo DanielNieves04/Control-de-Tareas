@@ -13,7 +13,7 @@ export default function ComponentTasks({ activeButton, tareas, setTareas }) {
   const [deletingId, setDeletingId] = useState(null); // Para animación de eliminación
   const token = localStorage.getItem("token");
   const [tareaEditando, setTareaEditando] = useState(null);
-  const BASE_URL = "http://localhost:8080/tareas";
+  const BASE_URL = "https://control-de-tareas-backend.onrender.com/tareas";
 
   // Abrir y cerrar modal
   const handleOpenModal = () => setIsModalOpen(true);
