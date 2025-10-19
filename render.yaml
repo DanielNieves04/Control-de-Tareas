@@ -1,5 +1,6 @@
 services:
   # 🚀 Backend - Spring Boot
+  services:
   - type: web
     name: control-de-tareas-backend
     runtime: docker
@@ -10,25 +11,18 @@ services:
     autoDeploy: true
     envVars:
       - key: SPRING_DATASOURCE_URL
-        fromDatabase:
-          name: control_db
-          property: connectionString
+        value: jdbc:postgresql://dpg-d3p89q56ubrc73djv1o0-a.render-database.com:5432/control_db_4lmf_psho
       - key: SPRING_DATASOURCE_USERNAME
-        fromDatabase:
-          name: control_db
-          property: user
+        value: postgres_user
       - key: SPRING_DATASOURCE_PASSWORD
-        fromDatabase:
-          name: control_db
-          property: password
-      - key: SPRING_DATASOURCE_DRIVER_CLASS_NAME
-        value: org.postgresql.Driver
+        value: HXa8ZxlUsZQ2W2E5hHs7UjERWjNiTHzN
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         value: update
       - key: SPRING_JPA_SHOW_SQL
         value: "true"
       - key: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
         value: org.hibernate.dialect.PostgreSQLDialect
+
 
   # 💻 Frontend - React
   - type: web
