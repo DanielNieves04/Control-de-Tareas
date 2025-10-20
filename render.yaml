@@ -1,6 +1,5 @@
 services:
   # 🚀 Backend - Spring Boot
-  services:
   - type: web
     name: control-de-tareas-backend
     runtime: docker
