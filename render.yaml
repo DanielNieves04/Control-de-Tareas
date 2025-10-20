@@ -10,7 +10,7 @@ services:
     autoDeploy: true
     envVars:
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://dpg-d3p89q56ubrc73djv1o0-a.render-database.com:5432/control_db_4lmf_psho
+        value: jdbc:postgresql://dpg-d3p89q56ubrc73djv1o0-a:5432/control_db_4lmf_psho
       - key: SPRING_DATASOURCE_USERNAME
         value: postgres_user
       - key: SPRING_DATASOURCE_PASSWORD
