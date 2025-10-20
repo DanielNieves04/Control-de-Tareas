@@ -12,9 +12,13 @@ services:
       - key: SPRING_DATASOURCE_URL
         value: jdbc:postgresql://dpg-d3p89q56ubrc73djv1o0-a:5432/control_db_4lmf_psho
       - key: SPRING_DATASOURCE_USERNAME
-        value: postgres_user
+        fromDatabase:
+          name: control_db
+          property: user
       - key: SPRING_DATASOURCE_PASSWORD
-        value: HXa8ZxlUsZQ2W2E5hHs7UjERWjNiTHzN
+        fromDatabase:
+          name: control_db
+          property: password
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         value: update
       - key: SPRING_JPA_SHOW_SQL
