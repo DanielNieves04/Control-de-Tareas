@@ -23,7 +23,6 @@ services:
       - key: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
         value: org.hibernate.dialect.PostgreSQLDialect
 
-
   # 💻 Frontend - React
   - type: web
     name: control-de-tareas-frontend
