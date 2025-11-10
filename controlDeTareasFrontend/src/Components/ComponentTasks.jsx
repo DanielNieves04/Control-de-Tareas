@@ -13,6 +13,7 @@ export default function ComponentTasks({ activeButton, tareas, setTareas }) {
   const [deletingId, setDeletingId] = useState(null); // Para animación de eliminación
   const token = localStorage.getItem("token");
   const [tareaEditando, setTareaEditando] = useState(null);
+  const [loading, setLoading] = useState(false);
   const BASE_URL = "https://control-de-tareas-backend.onrender.com/tareas";
 
   // Abrir y cerrar modal
@@ -39,10 +40,12 @@ export default function ComponentTasks({ activeButton, tareas, setTareas }) {
 
   // Agregar nueva tarea
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
 
     if (!token) {
       console.error("Token no disponible");
+      setLoading(false);
       return;
     }
 
@@ -78,8 +81,12 @@ export default function ComponentTasks({ activeButton, tareas, setTareas }) {
       .then(data => {
         setTareas([...tareas, data]);
         handleCloseModal();
+        setLoading(false);
       })
-      .catch(error => console.error("Error al agregar tarea:", error));
+      .catch(error => {
+        console.error("Error al agregar tarea:", error);
+        setLoading(false);
+      });
   };
 
   const eliminarTarea = (tareaId) => {
@@ -258,7 +265,9 @@ export default function ComponentTasks({ activeButton, tareas, setTareas }) {
                 </select>
               </label>
               <div className='modal-buttons'>
-                <button type="submit">Guardar</button>
+                <button type="submit" disabled={loading}>
+                  {loading ? "Cargando..." : "Guardar"}
+                </button>
                 <button type="button" onClick={handleCloseModal}>Cancelar</button>
               </div>
             </form>

@@ -3,7 +3,7 @@ import ComponentButtons from "./ComponentButtons";
 import ComponentTasks from "./ComponentTasks";
 
 export default function TaskManager({ tareas, setTareas }) {
-  const [activeButton, setActiveButton] = useState("Todas");
+  const [activeButton, setActiveButton] = useState("Haciendo");
 
   return (
     <div>

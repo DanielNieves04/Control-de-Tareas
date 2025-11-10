@@ -20,6 +20,7 @@ function App() {
   const [showAñadirSuccessModal, setShowAñadirSuccessModal] = useState(false);
   const [sugerenciasDuplicadas, setSugerenciasDuplicadas] = useState([]);
   const [mostrarModalDuplicadas, setMostrarModalDuplicadas] = useState(false);
+  const [mensajeLogout, setMensajeLogout] = useState("");
 
   const [mensajesChat, setMensajesChat] = useState([
     { tipo: 'bot', texto: '¡Hola! ¿En qué proyecto estás pensando hoy?' }
@@ -33,9 +34,21 @@ function App() {
   const handleCloseModalAlert = () => {
     setIsModalAlertOpen(false);
   };
+  
+  const verificarExpiracionToken = (token) => {
+    try {
+      const decoded = jwtDecode(token);
+      const currentTime = Date.now() / 1000; // tiempo actual en segundos
+      return decoded.exp && decoded.exp < currentTime; // true si expiró
+    } catch (error) {
+      console.error("Error al decodificar token:", error);
+      return true; // consideramos inválido si falla
+    }
+  };
 
   // Obtener tareas al cargar la página
   useEffect(() => {
+
     // Obtener tareas
     const cargarTareas = () => {
       if (token) {
@@ -57,26 +70,56 @@ function App() {
     cargarTareas();
   }, [token]);
 
+  const manejarCierreSesion = (mensaje) => {
+    console.log(mensaje);
+    setTareas([]);
+    setMensajesChat([
+      { tipo: 'bot', texto: '¡Hola! ¿En qué proyecto estás pensando hoy?' }
+    ]);
+    setMensajeLogout(mensaje);
+    setShowLogoutSuccessModal(true);
+
+    setTimeout(() => {
+      setShowLogoutSuccessModal(false);
+    }, 2500);
+
+    // Limpieza del token y correo
+    setToken("");
+    setEmailUsuario("");
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
+  };
+
   const handleLoginSuccess = (newToken, email) => {
     setToken(newToken || "");
     setEmailUsuario(email || "");
-    if (newToken) {
-      // Lógica adicional como cargar tareas si es necesario
-      console.log("Usuario autenticado:", email);
-    } else {
-      // Logout
-      console.log("Usuario cerró sesión");
-      setTareas([]);
-      setMensajesChat([
-        { tipo: 'bot', texto: '¡Hola! ¿En qué proyecto estás pensando hoy?' }
-      ]);
-      setShowLogoutSuccessModal(true); // Mostrar modal
 
+    if (newToken) {
+      console.log("Usuario autenticado:", email);
+
+      // Guardamos token/email por si recarga
+      localStorage.setItem("token", newToken);
+      localStorage.setItem("email", email);
+
+      // Verificamos expiración inmediata
+      if (verificarExpiracionToken(newToken)) {
+        manejarCierreSesion("Su sesión ha expirado");
+        return;
+      }
+
+      // Calculamos cuánto falta para que expire
+      const decoded = jwtDecode(newToken);
+      const tiempoRestante = decoded.exp * 1000 - Date.now();
+
+      // Programamos cierre automático
       setTimeout(() => {
-        setShowLogoutSuccessModal(false); // Ocultarlo después de 2 segundos
-      }, 2000);
+        manejarCierreSesion("Su sesión ha expirado, por favor inicie sesión de nuevo");
+      }, tiempoRestante);
+
+    } else {
+      manejarCierreSesion("Cierre de sesión exitoso");
     }
-  }
+  };
 
   // Generar posibles tareas
   const generarTareas = (e) => {
@@ -306,7 +349,7 @@ function App() {
         <div className="success-modal-overlay">
           <div className="success-modal">
             <div className="modal-content">
-              <p>¡Sesión cerrada exitosamente!</p>
+              <p>{mensajeLogout}</p>
             </div>
           </div>
         </div>
